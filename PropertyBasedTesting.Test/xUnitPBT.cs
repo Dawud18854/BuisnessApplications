@@ -1,12 +1,13 @@
 using FsCheck;
 using FsCheck.Xunit;
+using System;
 using Xunit;
 
 namespace PropertyBasedTesting.Test
 {
     public class xUnitPBT
     {
-        //PropertyTesting with xUnit using FsCheck
+        //PropertyTesting with xUnit using FsCheck (Wichtig: NugetPackages müssen installiert sein
 
 
         [Property]
@@ -25,6 +26,19 @@ namespace PropertyBasedTesting.Test
         public Property Test_Adding_Order_Doenst_Matter(int x, int y)
         {
             return (Add(x, y) == Add(y, x)).ToProperty();
+        }
+
+        [Property]
+        public Property Test_Mulitply_And_Divide_By_Same_Number(int x, int y)
+        {
+            Func<bool> properties = () => Divide(x * y, y) == x;
+            //Insted of using a if statement Func provides a useful method
+            return properties.When(y!=0);
+        }
+
+        public int Divide(int x, int y)
+        {
+            return x / y;
         }
 
         public int Add(int x, int y)
